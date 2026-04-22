@@ -56,4 +56,20 @@ export class FormAiComponent implements OnInit {
   onInputChange() {
     this.inputSubject.next({ ...this.formData }); // send copy
   }
+  downloadPDF() {
+  const finalData = {
+    role: this.aiResponse.autoFill?.role || this.formData.role,
+    skills: this.aiResponse.autoFill?.skills || this.formData.skills,
+    experience: this.aiResponse.autoFill?.experience || this.formData.experience,
+    summary: this.aiResponse.autoFill?.summary || this.formData.summary
+  };
+
+  this.aiService.downloadResume(finalData).subscribe((blob: Blob) => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'resume.pdf';
+    a.click();
+  });
+}
 }

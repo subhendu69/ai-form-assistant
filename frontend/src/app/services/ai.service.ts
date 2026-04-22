@@ -14,4 +14,9 @@ export class AiService {
   getFormSuggestions(data: any): Observable<any> {
     return this.http.post(this.API_URL, data);
   }
+  downloadResume(data: any) {
+  return this.http.post('http://127.0.0.1:8000/generate-resume', data, {
+    responseType: 'blob'
+  });
+}
 }
