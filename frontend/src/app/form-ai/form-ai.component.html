@@ -1,0 +1,58 @@
+<mat-card class="card">
+
+  <h2>AI Form Assistant</h2>
+  <p class="subtitle">Smart validation & auto-fill</p>
+
+  <!-- NAME -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="formData.name" (input)="onInputChange()">
+
+    <mat-error *ngIf="aiResponse.errors?.name">
+      {{ aiResponse.errors.name }}
+    </mat-error>
+
+    <mat-hint *ngIf="aiResponse.suggestions?.name">
+      💡 {{ aiResponse.suggestions.name }}
+    </mat-hint>
+  </mat-form-field>
+
+  <!-- EMAIL -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Email</mat-label>
+    <input matInput [(ngModel)]="formData.email" (input)="onInputChange()">
+
+    <mat-error *ngIf="aiResponse.errors?.email">
+      {{ aiResponse.errors.email }}
+    </mat-error>
+
+    <mat-hint *ngIf="aiResponse.suggestions?.email">
+      💡 {{ aiResponse.suggestions.email }}
+    </mat-hint>
+  </mat-form-field>
+
+  <!-- AGE -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Age</mat-label>
+    <input matInput [(ngModel)]="formData.age" (input)="onInputChange()">
+
+    <mat-error *ngIf="aiResponse.errors?.age">
+      {{ aiResponse.errors.age }}
+    </mat-error>
+
+    <mat-hint *ngIf="aiResponse.suggestions?.age">
+      💡 {{ aiResponse.suggestions.age }}
+    </mat-hint>
+  </mat-form-field>
+
+  <!-- LOADER -->
+  <div class="loader" *ngIf="loading">
+    <mat-spinner diameter="30"></mat-spinner>
+    <span>AI is thinking...</span>
+  </div>
+
+  <button mat-raised-button color="primary" class="full-width">
+    Submit
+  </button>
+
+</mat-card>
