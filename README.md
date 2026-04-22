@@ -71,33 +71,6 @@ Response
   }
 }
 🎯 What I Learned
-Designing AI-driven backend services
-Structuring predictable AI responses (JSON formatting)
-Handling frontend ↔ backend async communication
-Debugging real-world issues like:
-API failures
-Invalid AI responses
-Integration mismatches
-🚧 Challenges Solved
-❌ AI returning inconsistent responses
-✅ Fixed with structured prompting
-❌ Frontend not handling dynamic errors
-✅ Built flexible error-mapping UI
-❌ API integration failures
-✅ Implemented robust error handling
-📈 Future Improvements
-🔐 User authentication
-📊 Admin dashboard for form analytics
-🌍 Multi-language AI validation
-📱 Mobile-first UI improvements
-🧠 Custom-trained model instead of generic API
-📸 Demo (Add This!)
-
-👉 Add screenshots / GIF here for maximum impact
-(Highly recommended for recruiters)
-
-💼 Why This Matters for Hiring
-
 This project demonstrates:
 
 ✅ Full-stack development skills
