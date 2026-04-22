@@ -7,7 +7,7 @@ An end-to-end full-stack application that uses AI to validate, correct, and guid
 🔥 Why This Project Stands Out
 
 Most forms only validate syntax.
-This project goes further by using AI to:
+This project goes further by using AI to: 
 
 Understand contextual mistakes (not just empty fields)
 Suggest human-like corrections
