@@ -1,58 +1,54 @@
 <mat-card class="card">
 
-  <h2>AI Form Assistant</h2>
-  <p class="subtitle">Smart validation & auto-fill</p>
+  <h2>AI Resume Builder</h2>
+  <p class="subtitle">Build professional resumes with AI</p>
 
-  <!-- NAME -->
+  <!-- ROLE -->
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="formData.name" (input)="onInputChange()">
-
-    <mat-error *ngIf="aiResponse.errors?.name">
-      {{ aiResponse.errors.name }}
-    </mat-error>
-
-    <mat-hint *ngIf="aiResponse.suggestions?.name">
-      💡 {{ aiResponse.suggestions.name }}
-    </mat-hint>
+    <mat-label>Target Role</mat-label>
+    <input matInput [(ngModel)]="formData.role" (input)="onInputChange()">
   </mat-form-field>
 
-  <!-- EMAIL -->
+  <!-- SKILLS -->
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Email</mat-label>
-    <input matInput [(ngModel)]="formData.email" (input)="onInputChange()">
-
-    <mat-error *ngIf="aiResponse.errors?.email">
-      {{ aiResponse.errors.email }}
-    </mat-error>
-
-    <mat-hint *ngIf="aiResponse.suggestions?.email">
-      💡 {{ aiResponse.suggestions.email }}
-    </mat-hint>
+    <mat-label>Skills</mat-label>
+    <textarea matInput rows="2"
+      [(ngModel)]="formData.skills"
+      (input)="onInputChange()"></textarea>
   </mat-form-field>
 
-  <!-- AGE -->
+  <div class="ai-output" *ngIf="aiResponse.autoFill?.skills">
+    ✨ {{ aiResponse.autoFill.skills }}
+  </div>
+
+  <!-- EXPERIENCE -->
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Age</mat-label>
-    <input matInput [(ngModel)]="formData.age" (input)="onInputChange()">
-
-    <mat-error *ngIf="aiResponse.errors?.age">
-      {{ aiResponse.errors.age }}
-    </mat-error>
-
-    <mat-hint *ngIf="aiResponse.suggestions?.age">
-      💡 {{ aiResponse.suggestions.age }}
-    </mat-hint>
+    <mat-label>Experience</mat-label>
+    <textarea matInput rows="3"
+      [(ngModel)]="formData.experience"
+      (input)="onInputChange()"></textarea>
   </mat-form-field>
+
+  <div class="ai-output" *ngIf="aiResponse.autoFill?.experience">
+    ✨ {{ aiResponse.autoFill.experience }}
+  </div>
+
+  <!-- SUMMARY -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Summary</mat-label>
+    <textarea matInput rows="3"
+      [(ngModel)]="formData.summary"
+      (input)="onInputChange()"></textarea>
+  </mat-form-field>
+
+  <div class="ai-output" *ngIf="aiResponse.autoFill?.summary">
+    ✨ {{ aiResponse.autoFill.summary }}
+  </div>
 
   <!-- LOADER -->
   <div class="loader" *ngIf="loading">
     <mat-spinner diameter="30"></mat-spinner>
-    <span>AI is thinking...</span>
+    <span>AI improving your resume...</span>
   </div>
-
-  <button mat-raised-button color="primary" class="full-width">
-    Submit
-  </button>
 
 </mat-card>

@@ -113,3 +113,27 @@ input.error {
   gap: 10px;
   margin: 10px 0;
 }
+
+.card {
+  max-width: 500px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.ai-output {
+  background: #eef4ff;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

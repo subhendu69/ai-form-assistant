@@ -16,8 +16,6 @@ DEV_KEY = os.getenv("dev_key")
 CLINE_BASE_URL = os.getenv("CLINE_BASE_URL", "https://api.cline.bot/api/v1")
 CLINE_MODEL = os.getenv("CLINE_MODEL", "openai/gpt-4o-mini")
 
-print("ENV CHECK -> dev_key:", "FOUND" if DEV_KEY else "MISSING")
-
 if not DEV_KEY:
     raise ValueError("Missing dev_key in .env")
 
@@ -30,44 +28,26 @@ client = AsyncOpenAI(
 )
 
 # -----------------------------
-# GENERIC CHAT FUNCTION (FINAL FIX 🔥)
+# GENERIC CHAT FUNCTION
 # -----------------------------
 async def get_ai_response(messages: List[Dict[str, str]]) -> dict:
     try:
-        formatted_messages = [
-            {
-                "role": msg.get("role", "user") if isinstance(msg, dict) else getattr(msg, "role", "user"),
-                "content": msg.get("content", "") if isinstance(msg, dict) else getattr(msg, "content", "")
-            }
-            for msg in messages
-        ]
-
         response = await client.chat.completions.create(
             model=CLINE_MODEL,
-            messages=formatted_messages,
-            temperature=0.3
+            messages=messages,
+            temperature=0.5
         )
 
         content = None
 
-        # ✅ CASE 1: Standard OpenAI format
-        try:
-            if hasattr(response, "choices") and response.choices:
-                content = response.choices[0].message.content
-        except Exception:
-            pass
+        # OpenAI format
+        if hasattr(response, "choices") and response.choices:
+            content = response.choices[0].message.content
 
-        # ✅ CASE 2: Cline format (IMPORTANT 🔥)
-        if not content:
-            try:
-                if hasattr(response, "data") and response.data:
-                    content = response.data["choices"][0]["message"]["content"]
-            except Exception:
-                pass
+        # Cline format
+        if not content and hasattr(response, "data"):
+            content = response.data["choices"][0]["message"]["content"]
 
-        # ❌ DO NOT stringify full response
-
-        # ✅ FINAL fallback
         if not content:
             print("FULL RESPONSE DEBUG:", response)
             content = "AI returned empty response"
@@ -78,32 +58,33 @@ async def get_ai_response(messages: List[Dict[str, str]]) -> dict:
         }
 
     except Exception as e:
-        print("AI ERROR:", repr(e))
+        print("AI ERROR:", e)
         return {
             "role": "assistant",
-            "content": f"Backend error: {str(e)}",
+            "content": str(e),
             "error": True
         }
 
-
 # -----------------------------
-# FORM AI FUNCTION (FINAL 🔥)
+# RESUME AI FUNCTION 🔥
 # -----------------------------
 async def get_form_ai_suggestions(form_data: dict) -> dict:
 
     prompt = f"""
-You are an AI Form Assistant.
+You are an AI Resume Assistant.
 
-Analyze this form data:
+User is building a professional resume.
+
+Input:
 {form_data}
 
 Tasks:
-1. Validate fields
-2. Suggest missing values
-3. Improve values
+1. Improve writing professionally
+2. Fix grammar
+3. Make it job-ready
 
 STRICT RULE:
-Return ONLY valid JSON.
+Return ONLY valid JSON
 
 Format:
 {{
@@ -111,6 +92,10 @@ Format:
   "suggestions": {{}},
   "autoFill": {{}}
 }}
+
+IMPORTANT:
+- suggestions = explain improvement
+- autoFill = improved version
 """
 
     messages = [
@@ -121,24 +106,17 @@ Format:
     response = await get_ai_response(messages)
     content = response.get("content", "")
 
-    # -----------------------------
-    # CLEAN + PARSE JSON
-    # -----------------------------
     try:
-        content = content.strip()
-
         # remove markdown if exists
         if "```" in content:
             content = content.split("```")[1]
             content = content.replace("json", "").strip()
 
-        parsed = json.loads(content)
-
-        return parsed
+        return json.loads(content)
 
     except Exception as e:
-        print("JSON PARSE ERROR:", e)
-        print("RAW AI:", content)
+        print("JSON ERROR:", e)
+        print("RAW:", content)
 
         return {
             "errors": {},
